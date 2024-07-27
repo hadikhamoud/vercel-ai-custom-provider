@@ -238,7 +238,7 @@ export class CustomProviderChatLanguageModel implements LanguageModelV1 {
     return {
       stream: response.pipeThrough(
         new TransformStream<
-          ParseResult<z.infer<typeof customProviderChatChunkSchema>>,
+          ParseResult<z.infer<typeof CustomProviderChatChunkSchema>>,
           LanguageModelV1StreamPart
         >({
           transform(chunk, controller) {
