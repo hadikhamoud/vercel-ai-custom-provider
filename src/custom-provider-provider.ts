@@ -72,7 +72,13 @@ export function createCustomProvider(
 ): CustomProviderProvider {
   const baseURL =
     withoutTrailingSlash(options.baseURL ?? options.baseUrl) ??
-    'http://localhost:8011/v1';
+    loadApiKey({
+      apiKey: options.baseURL,
+      environmentVariableName: 'CUSTOM_PROVIDER_API_URL',
+      apiKeyParameterName : 'baseUrl',
+      description: 'CustomProvider',
+    })
+      ;
 
   const getHeaders = () => ({
     Authorization: `Bearer ${loadApiKey({
