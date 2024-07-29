@@ -1,6 +1,7 @@
 import {
   generateId,
   loadApiKey,
+  loadSetting,
   withoutTrailingSlash,
 } from '@ai-sdk/provider-utils';
 import { CustomProviderChatLanguageModel } from './custom-provider-chat-language-model';
@@ -71,13 +72,14 @@ export function createCustomProvider(
   options: CustomProviderProviderSettings = {},
 ): CustomProviderProvider {
   const baseURL =
-    withoutTrailingSlash(options.baseURL ?? options.baseUrl) ??
-    loadApiKey({
-      apiKey: options.baseURL,
+    withoutTrailingSlash(
+    loadSetting({
+      settingValue: options.baseURL,
       environmentVariableName: 'CUSTOM_PROVIDER_API_URL',
-      apiKeyParameterName : 'baseUrl',
+      settingName : 'baseURL',
       description: 'CustomProvider',
     })
+  ) ?? 'https://api.customprovider.ai';
       ;
 
   const getHeaders = () => ({
@@ -95,7 +97,7 @@ export function createCustomProvider(
   ) =>
     new CustomProviderChatLanguageModel(modelId, settings, {
       provider: 'CustomProvider.chat',
-      baseURL,
+      baseURL: baseURL,
       headers: getHeaders,
       generateId: options.generateId ?? generateId,
       fetch: options.fetch,
